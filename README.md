@@ -1,6 +1,8 @@
 # Docker Keycloak Gatekeeper
 
-[![Docker hub](https://img.shields.io/docker/pulls/containerinfra/keycloak-gatekeeper.svg)](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/)
+Docker image build for Keycloak Gatekeeper, using scratch as a basis.
+
+[![Docker hub](https://img.shields.io/docker/pulls/containerinfra/keycloak-gatekeeper.svg)](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/) [![CircleCI](https://circleci.com/gh/containerinfra/keycloak-gatekeeper.svg?style=svg)](https://circleci.com/gh/containerinfra/keycloak-gatekeeper)
 
 ## Table of Contents
 
@@ -22,7 +24,7 @@ See Keycloak Documentation: https://www.keycloak.org/docs/latest/securing_apps/i
 
 | Tag | Notes |
 |-----|-------|
-| `4.6.0` | Keycloak Gatekeeper v4.x |
+| `4` | Keycloak Gatekeeper v4.x |
 | `4.6` | Keycloak Gatekeeper v4.6.x |
 | `4.6.0` | Keycloak Gatekeeper v4.6.0 |
 
