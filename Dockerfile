@@ -1,4 +1,4 @@
-FROM centos:latest as build
+FROM debian as build
 
 ENV KEYCLOAK_GATEKEEPER_VERSION=4.6.0.Final \
     KEYCLOAK_GATEKEEPER_SHA256=a0f52aa762332dcb25a0224c1e05c16eb5a8508a6fa4b3f3b8c7a5d71753bebb
