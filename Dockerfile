@@ -1,10 +1,11 @@
 FROM centos:7 as build
 
-ENV KEYCLOAK_GATEKEEPER_VERSION=4.6.0.Final \
-    KEYCLOAK_GATEKEEPER_SHA256=a0f52aa762332dcb25a0224c1e05c16eb5a8508a6fa4b3f3b8c7a5d71753bebb
+ARG KEYCLOAK_GATEKEEPER_VERSION=4.7.0.Final
+ARG KEYCLOAK_GATEKEEPER_SHA256=2f1793e6b67a80a0cb1a253e2acc5f344e7997605a29871dfad617360940106e
 
 RUN curl -L -O https://downloads.jboss.org/keycloak/${KEYCLOAK_GATEKEEPER_VERSION}/gatekeeper/keycloak-gatekeeper-linux-amd64.tar.gz \
     \
+    && sha256sum keycloak-gatekeeper-linux-amd64.tar.gz \
     && echo "${KEYCLOAK_GATEKEEPER_SHA256} keycloak-gatekeeper-linux-amd64.tar.gz" | sha256sum -c \
     && tar -zxvf keycloak-gatekeeper-linux-amd64.tar.gz  \
     \

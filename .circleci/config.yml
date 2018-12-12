@@ -1,31 +1,79 @@
 version: 2
 jobs:
-  build:
+  build-v4.7.0:
     docker:
       - image: docker:stable
         environment:
           DOCKER_DRIVER: overlay2
           MAJOR_VERSION: '4'
-          MINOR_VERSION: '4.6'
-          FULL_VERSION: '4.6.0'
+          MINOR_VERSION: '4.7'
+          FULL_VERSION: '4.7.0'
+          SHA256: 2f1793e6b67a80a0cb1a253e2acc5f344e7997605a29871dfad617360940106e
           CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
       - run: |
-          if [ $CIRCLE_BRANCH == "master" ]; then
-            docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD 
-          fi
-          
-          docker build --build-arg KEYCLOAK_VERSION=$FULL_VERSION -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
-          
-          if [ $CIRCLE_BRANCH == "master"  ]; then
-            docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MINOR_VERSION
-            docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MAJOR_VERSION
-            docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:latest
-            docker push $CI_REGISTRY_IMAGE:$FULL_VERSION
-            docker push $CI_REGISTRY_IMAGE:$MINOR_VERSION
-            docker push $CI_REGISTRY_IMAGE:$MAJOR_VERSION
-            docker push $CI_REGISTRY_IMAGE:latest
-          fi
+          docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+
+          docker build --build-arg KEYCLOAK_VERSION=$FULL_VERSION --build-arg=KEYCLOAK_GATEKEEPER_SHA256=$SHA256 -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
+          docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MINOR_VERSION
+          docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MAJOR_VERSION
+          docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:latest
+          docker push $CI_REGISTRY_IMAGE:$FULL_VERSION
+          docker push $CI_REGISTRY_IMAGE:$MINOR_VERSION
+          docker push $CI_REGISTRY_IMAGE:$MAJOR_VERSION
+          docker push $CI_REGISTRY_IMAGE:latest
+
+  build-v4.6.0:
+    docker:
+      - image: docker:stable
+        environment:
+          DOCKER_DRIVER: overlay2
+          MINOR_VERSION: '4.6'
+          FULL_VERSION: '4.6.0'
+          SHA256: a0f52aa762332dcb25a0224c1e05c16eb5a8508a6fa4b3f3b8c7a5d71753bebb
+          CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run: |
+          docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+
+          docker build --build-arg KEYCLOAK_VERSION=$FULL_VERSION --build-arg=KEYCLOAK_GATEKEEPER_SHA256=$SHA256 -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
+          docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MINOR_VERSION
+          docker push $CI_REGISTRY_IMAGE:$FULL_VERSION
+          docker push $CI_REGISTRY_IMAGE:$MINOR_VERSION
+
+  build-pr:
+    docker:
+      - image: docker:stable
+        environment:
+          DOCKER_DRIVER: overlay2
+          CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run: |
+          docker build -t $CI_REGISTRY_IMAGE:latest .
+
+workflows:
+  version: 2
+  build-job:
+    jobs:
+      - build-v4.7.0:
+          filters:
+            branches:
+              only: master
+      - build-v4.6.0:
+          filters:
+            branches:
+              only: master
+
+      - build-pr:
+          filters:
+            branches:
+              ignore: master
