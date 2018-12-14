@@ -80,3 +80,16 @@ workflows:
           filters:
             branches:
               ignore: master
+
+  monthly:
+    triggers:
+      - schedule:
+          cron: "0 0 14 * *"
+          filters:
+           branches:
+             only:
+               - master
+    jobs:
+      - build-v4.7.0
+      - build-v4.6.0
+ 
