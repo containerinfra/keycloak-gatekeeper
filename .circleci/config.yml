@@ -71,29 +71,6 @@ jobs:
           docker push $CI_REGISTRY_IMAGE:$FULL_VERSION
           docker push $CI_REGISTRY_IMAGE:$MINOR_VERSION
 
-  build-v4.6.0:
-    docker:
-      - image: docker:stable
-        environment:
-          DOCKER_DRIVER: overlay2
-          MINOR_VERSION: '4.6'
-          FULL_VERSION: '4.6.0'
-          SHA256: a0f52aa762332dcb25a0224c1e05c16eb5a8508a6fa4b3f3b8c7a5d71753bebb
-          CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
-      - run: |
-          docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-
-          docker pull $CI_REGISTRY_IMAGE:$FULL_VERSION || true
-
-          docker build --cache-from $CI_REGISTRY_IMAGE:$FULL_VERSION --build-arg KEYCLOAK_GATEKEEPER_VERSION=${FULL_VERSION}.Final --build-arg=KEYCLOAK_GATEKEEPER_SHA256=$SHA256 -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
-          docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MINOR_VERSION
-          docker push $CI_REGISTRY_IMAGE:$FULL_VERSION
-          docker push $CI_REGISTRY_IMAGE:$MINOR_VERSION
-
   build-pr:
     docker:
       - image: docker:stable
@@ -123,10 +100,6 @@ workflows:
           filters:
             branches:
               only: master
-      - build-v4.6.0:
-          filters:
-            branches:
-              only: master
       - build-pr:
           filters:
             branches:
@@ -141,6 +114,8 @@ workflows:
              only:
                - master
     jobs:
+      - build-v4.8.1
+      - build-v4.8.0
       - build-v4.7.0
-      - build-v4.6.0
+
  
