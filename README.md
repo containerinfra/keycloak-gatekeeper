@@ -25,6 +25,9 @@ See Keycloak Documentation: https://www.keycloak.org/docs/latest/securing_apps/i
 | Tag | Notes |
 |-----|-------|
 | `4` | Keycloak Gatekeeper v4.x |
+| `4.8` | Keycloak Gatekeeper v4.8.x |
+| `4.8.1` | Keycloak Gatekeeper v4.8.1 |
+| `4.8.0` | Keycloak Gatekeeper v4.8.0 |
 | `4.7` | Keycloak Gatekeeper v4.7.x |
 | `4.7.0` | Keycloak Gatekeeper v4.7.0 |
 | `4.6` | Keycloak Gatekeeper v4.6.x |
