@@ -7,8 +7,8 @@ jobs:
           DOCKER_DRIVER: overlay2
           MAJOR_VERSION: '4'
           MINOR_VERSION: '4.8'
-          FULL_VERSION: '4.8.2'
-          SHA256: 399c4393a5a368ae8a963d096c6fa150918c867ca2f44f8a5c4fd49a485d23e8
+          FULL_VERSION: '4.8.3'
+          SHA256: 3d2625de7b852506bd82d66793a3aa5072cad51e2a1aed95c580083ccf08b492
           CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
     steps:
       - checkout
@@ -44,7 +44,7 @@ workflows:
   version: 2
   build-job:
     jobs:
-      - build-v4.8.2:
+      - build-v4.8.3:
           filters:
             branches:
               only: master
@@ -62,4 +62,4 @@ workflows:
              only:
                - master
     jobs:
-      - build-v4.8.2
+      - build-v4.8.3
