@@ -18,7 +18,7 @@ jobs:
           docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
           docker pull $CI_REGISTRY_IMAGE:$FULL_VERSION || true
 
-          docker build --cache-from $CI_REGISTRY_IMAGE:$FULL_VERSION --build-arg KEYCLOAK_GATEKEEPER_VERSION=${FULL_VERSION}.Final --build-arg=KEYCLOAK_GATEKEEPER_SHA256=$SHA256 -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
+          docker build --cache-from $CI_REGISTRY_IMAGE:$FULL_VERSION --build-arg KEYCLOAK_GATEKEEPER_VERSION=${FULL_VERSION} --build-arg=KEYCLOAK_GATEKEEPER_SHA256=$SHA256 -t $CI_REGISTRY_IMAGE:$FULL_VERSION --label org.opencontainers.image.revision=$CIRCLE_SHA1 .
           docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MINOR_VERSION
           docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:$MAJOR_VERSION
           docker tag $CI_REGISTRY_IMAGE:$FULL_VERSION $CI_REGISTRY_IMAGE:latest
