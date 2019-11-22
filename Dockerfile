@@ -1,7 +1,7 @@
 FROM centos:7 as build
 
-ARG KEYCLOAK_GATEKEEPER_VERSION=6.0.1
-ARG KEYCLOAK_GATEKEEPER_SHA256=a0951b5660b2ea6bf9e77e52a986ae9abe7b3ea07943a3266cbcc938d9b2c0c7
+ARG KEYCLOAK_GATEKEEPER_VERSION=8.0.0
+ARG KEYCLOAK_GATEKEEPER_SHA256=e145fa743e4a051dadccd1fc23b0bfa98deff4b23e957ce20c020b4bdf3afa8e
 
 RUN curl -L -O https://downloads.jboss.org/keycloak/${KEYCLOAK_GATEKEEPER_VERSION}/gatekeeper/keycloak-gatekeeper-linux-amd64.tar.gz \
     \
@@ -13,6 +13,6 @@ RUN curl -L -O https://downloads.jboss.org/keycloak/${KEYCLOAK_GATEKEEPER_VERSIO
     && rm -rf keycloak-gatekeeper-linux-amd64.tar.gz
 
 # Resulting image
-FROM scratch 
+FROM gcr.io/distroless/static 
 COPY --from=build /usr/local/bin/keycloak-gatekeeper /usr/local/bin/keycloak-gatekeeper
 ENTRYPOINT [ "/usr/local/bin/keycloak-gatekeeper" ]
