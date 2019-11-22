@@ -1,14 +1,14 @@
 version: 2
 jobs:
-  build-v6.0.1:
+  build-v8.0.0:
     docker:
       - image: docker:stable
         environment:
           DOCKER_DRIVER: overlay2
-          MAJOR_VERSION: '6'
-          MINOR_VERSION: '6.0'
-          FULL_VERSION: '6.0.1'
-          SHA256: a0951b5660b2ea6bf9e77e52a986ae9abe7b3ea07943a3266cbcc938d9b2c0c7
+          MAJOR_VERSION: '8'
+          MINOR_VERSION: '8.0'
+          FULL_VERSION: '8.0.0'
+          SHA256: e145fa743e4a051dadccd1fc23b0bfa98deff4b23e957ce20c020b4bdf3afa8e
           CI_REGISTRY_IMAGE: 'containerinfra/keycloak-gatekeeper'
     steps:
       - checkout
@@ -44,7 +44,7 @@ workflows:
   version: 2
   build-job:
     jobs:
-      - build-v6.0.1:
+      - build-v8.0.0:
           filters:
             branches:
               only: master
@@ -62,4 +62,4 @@ workflows:
              only:
                - master
     jobs:
-      - build-v6.0.1
+      - build-v8.0.0
