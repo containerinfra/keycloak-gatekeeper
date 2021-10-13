@@ -1,0 +1,80 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  VERSION: '9.0.3'
+  SHA256: '949638c9efcc6809a8058472ad5fecd126b4a8691013a5cee21761c15b3c1501'
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Set up cosign
+        uses: sigstore/cosign-installer@main
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: thojkooi
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: thojkooi
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Verify base image
+        run: |          
+          cosign dockerfile verify -base-image-only -key ./build/cosign-allowed-dependencies.pub Dockerfile
+
+      - name: Publish container image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          tags: |
+            ghcr.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+            docker.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          build-args: |
+            OAUTH2_PROXY_VERSION=v${{ env.VERSION }}
+            OAUTH2_PROXY_SHA256=${{ env.SHA256 }}
+          labels: |
+            org.opencontainers.image.title=${{ github.event.repository.name }}
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+            org.opencontainers.image.url=${{ github.event.repository.html_url }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ env.VERSION }}
+
+      - name: sign container image
+        run: |
+            echo "$COSIGN_KEY" >> cosign.key
+            cosign sign --key cosign.key ghcr.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+            cosign sign --key cosign.key docker.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+        shell: bash
+        env:
+          COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+          COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
+
+      - name: Check images
+        run: |
+          docker buildx imagetools inspect docker.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }}
+          docker buildx imagetools inspect ghcr.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }}
+          docker pull docker.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }}
+          docker pull ghcr.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }}
+          cosign verify --key cosign.pub docker.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }}
+          cosign verify --key cosign.pub ghcr.io/containerinfra/${IMAGE_NAME}:${{ env.VERSION }} 

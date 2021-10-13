@@ -1,0 +1,30 @@
+name: pr
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Set up cosign
+        uses: sigstore/cosign-installer@main
+
+      - name: Verify base image
+        run: |          
+          cosign dockerfile verify -base-image-only -key ./build/cosign-allowed-dependencies.pub Dockerfile
+      - name: Build container image
+        run: |
+          make docker
