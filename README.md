@@ -21,7 +21,22 @@ Deploy using `containerinfra/keycloak-gatekeeper`.
 See Keycloak Documentation: https://www.keycloak.org/docs/latest/securing_apps/index.html
 
 ```bash
-LOBAL OPTIONS:
+NAME:
+   keycloak-gatekeeper - is a proxy using the keycloak service for auth and authorization
+
+USAGE:
+   keycloak-gatekeeper [options]
+
+VERSION:
+   9.0.3 (git+sha: d2a9ce6, built: 14-04-2020)
+
+AUTHOR:
+   Keycloak <keycloak-user@lists.jboss.org>
+
+COMMANDS:
+     help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
    --config value                            path the a configuration file [$PROXY_CONFIG_FILE]
    --listen value                            the interface the service should be listening on [$PROXY_LISTEN]
    --listen-http value                       interface we should be listening [$PROXY_LISTEN_HTTP]
@@ -50,6 +65,7 @@ LOBAL OPTIONS:
    --enable-logout-redirect                  indicates we should redirect to the identity provider for logging out (default: false)
    --enable-default-deny                     enables a default denial on all requests, you have to explicitly say what is permitted (recommended) (default: true)
    --enable-encrypted-token                  enable encryption for the access tokens (default: false)
+   --force-encrypted-cookie                  force encryption for the access tokens in cookies (default: false)
    --enable-logging                          enable http logging of the requests (default: false)
    --enable-json-logging                     switch on json logging rather than text (default: false)
    --enable-forwarding                       enables the forwarding proxy mode, signing outbound request (default: false)
@@ -75,6 +91,7 @@ LOBAL OPTIONS:
    --cookie-refresh-name value               name of the cookie used to hold the encrypted refresh token (default: "kc-state")
    --secure-cookie                           enforces the cookie to be secure (default: true)
    --http-only-cookie                        enforces the cookie is in http only mode (default: true)
+   --same-site-cookie value                  enforces cookies to be send only to same site requests according to the policy (can be Strict|Lax|None) (default: "Lax")
    --match-claims value                      keypair values for matching access token claims e.g. aud=myapp, iss=http://example.*
    --add-claims value                        extra claims from the token and inject into headers, e.g given_name -> X-Auth-Given-Name
    --tls-cert value                          path to ths TLS certificate
