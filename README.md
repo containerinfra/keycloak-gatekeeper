@@ -1,8 +1,8 @@
 # Docker Keycloak Gatekeeper
 
-Docker image build for Keycloak Gatekeeper, using scratch as a basis.
+Docker image build for Keycloak Gatekeeper, using distroless as a basis.
 
-[![Docker hub](https://img.shields.io/docker/pulls/containerinfra/keycloak-gatekeeper.svg)](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/) [![CircleCI](https://circleci.com/gh/containerinfra/keycloak-gatekeeper.svg?style=svg)](https://circleci.com/gh/containerinfra/keycloak-gatekeeper)
+[![Docker hub](https://img.shields.io/docker/pulls/containerinfra/keycloak-gatekeeper.svg)](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/containerinfra/keycloak-gatekeeper/release)
 
 ## Table of Contents
 
@@ -14,7 +14,10 @@ Docker image build for Keycloak Gatekeeper, using scratch as a basis.
 
 ### Image
 
-Deploy using `containerinfra/keycloak-gatekeeper`.
+- docker pull docker.io/containerinfra/keycloak-gatekeeper
+- docker pull ghcr.io/containerinfra/keycloak-gatekeeper
+
+Images are published on [Docker hub](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/) and [Github Container Registry](https://github.com/containerinfra/keycloak-gatekeeper/pkgs/container/keycloak-gatekeeper).
 
 ### Configuration
 
