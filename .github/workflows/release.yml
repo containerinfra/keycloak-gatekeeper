@@ -51,6 +51,7 @@ jobs:
           tags: |
             ghcr.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
             docker.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+            docker.io/containerinfra/${{ env.IMAGE_NAME }}:latest
           build-args: |
             OAUTH2_PROXY_VERSION=v${{ env.VERSION }}
             OAUTH2_PROXY_SHA256=${{ env.SHA256 }}
@@ -66,6 +67,7 @@ jobs:
             echo "$COSIGN_KEY" >> cosign.key
             cosign sign --key cosign.key ghcr.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
             cosign sign --key cosign.key docker.io/containerinfra/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+            cosign sign --key cosign.key docker.io/containerinfra/${{ env.IMAGE_NAME }}:latest
         shell: bash
         env:
           COSIGN_KEY: ${{secrets.COSIGN_KEY}}
