@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-v9.0.0:
+  build-v9.0.3:
     docker:
       - image: docker:stable
         environment:
@@ -74,6 +74,10 @@ workflows:
           filters:
             branches:
               only: master
+      - build-v9.0.3:
+          filters:
+            branches:
+              only: master
       - build-pr:
           filters:
             branches:
@@ -89,3 +93,4 @@ workflows:
                - master
     jobs:
       - build-v8.0.0
+      - build-v9.0.3
