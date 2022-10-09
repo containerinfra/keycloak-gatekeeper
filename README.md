@@ -4,6 +4,8 @@ Docker image build for Keycloak Gatekeeper, using distroless as a basis.
 
 [![Docker hub](https://img.shields.io/docker/pulls/containerinfra/keycloak-gatekeeper.svg)](https://hub.docker.com/r/containerinfra/keycloak-gatekeeper/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/containerinfra/keycloak-gatekeeper/release)
 
+> *Please use [oauth2-proxy](https://github.com/containerinfra/oauth2-proxy) instead*!
+
 ## Table of Contents
 
 - [Usage](#usage)
