@@ -41,7 +41,7 @@ jobs:
           cosign dockerfile verify -base-image-only -key ./build/cosign-allowed-dependencies.pub Dockerfile
 
       - name: Publish container image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           builder: ${{ steps.buildx.outputs.name }}
